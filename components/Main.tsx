@@ -3,6 +3,7 @@ import {
 	TooltipContent,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Link } from "lucide-react";
 
 export default function Main({ userData }: { userData: User }) {
 	return (
@@ -11,7 +12,7 @@ export default function Main({ userData }: { userData: User }) {
 				👋 Welcome, {userData.name || "User"}!
 			</p>
 			<Tooltip>
-				<TooltipTrigger>Hover</TooltipTrigger>
+				<TooltipTrigger><Link/></TooltipTrigger>
 				<TooltipContent>
 					<p>Add to library</p>
 				</TooltipContent>
