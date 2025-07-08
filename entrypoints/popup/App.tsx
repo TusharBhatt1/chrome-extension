@@ -1,6 +1,6 @@
 import "./App.css";
-import useExtensionData from "../utils/hooks/useExtensionData";
-import Main from "../components/Main";
+import useExtensionData from "../../lib/hooks/useExtensionData";
+import Main from "../../components/Main";
 
 function App() {
 	const { userData, isLoading } = useExtensionData();
