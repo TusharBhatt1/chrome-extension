@@ -7,6 +7,6 @@ import { Toaster } from '@/components/ui/sonner.tsx';
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App />
-    <Toaster theme='dark'/>
+    <Toaster/>
   </React.StrictMode>,
 );

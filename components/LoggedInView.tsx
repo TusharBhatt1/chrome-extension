@@ -6,7 +6,7 @@ import {
 import { handleCopy } from "@/lib/helper";
 import { Link } from "lucide-react";
 
-export default function Main({ userData }: { userData: User }) {
+export default function LoggedInView({ userData }: { userData: User }) {
 	return (
 		<div className="flex justify-between items-center">
 			<p>👋 Welcome, {userData.name || "User"}!</p>
