@@ -1,41 +1,23 @@
-import { useState } from "react";
-import reactLogo from "@/assets/react.svg";
-import wxtLogo from "/wxt.svg";
 import "./App.css";
+import useExtensionData from "../utils/hooks/useExtensionData";
 
 function App() {
-	const [count, setCount] = useState(0);
-
-	useEffect(() => {
-		fetch("https://app.cal.com/api/auth/session")
-			.then((res) => res.json())
-			.then((res) => console.log("res:", res))
-			.catch((e) => console.log(e));
-	}, [count]);
+	const { userData, isLoading } = useExtensionData();
 
 	return (
-		<>
-			<div className="bg-red-100">
-				<a href="https://wxt.dev" target="_blank">
-					<img src={wxtLogo} className="logo" alt="WXT logo" />
-				</a>
-				<a href="https://react.dev" target="_blank">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
-			</div>
-			<h1>WXT + Reacttttttttt</h1>
-			<div className="card">
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<p className="read-the-docs">
-				Click on the WXT and React logos to learn more
-			</p>
-		</>
+		<div>
+			{isLoading ? (
+				<p className="text-gray-500">Loading user info...</p>
+			) : userData?.name ? (
+				<div>
+					<p className="text-green-800 font-medium">
+						👋 Welcome, {userData.name || "User"}!
+					</p>
+				</div>
+			) : (
+				<p className="text-red-600">Not logged in.</p>
+			)}
+		</div>
 	);
 }
 
