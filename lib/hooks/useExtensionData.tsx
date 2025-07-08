@@ -7,11 +7,10 @@ export default function useExtensionData() {
 
 	useEffect(() => {
 		getUserInfo().then((data) => {
-			//@ts-expect-error will fix later
-			setUserData(data?.user);
+			setUserData(data);
 			setIsLoading(false);
 		});
-		fetchEventTypes().then((data)=>console.log(data))
+		fetchEventTypes().then((data) => console.log(data));
 	}, []);
 
 	return { userData, isLoading };

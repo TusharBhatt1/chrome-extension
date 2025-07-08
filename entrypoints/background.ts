@@ -8,7 +8,7 @@ export default defineBackground(() => {
 				credentials: "include",
 			})
 				.then((res) => res.json())
-				.then((data) => sendResponse(data))
+				.then((data) => sendResponse(data.user))
 				.catch((err) => sendResponse({ error: err.message }));
 
 			return true; // keep the message channel open for async sendResponse
