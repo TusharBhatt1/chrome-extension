@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserInfo } from "../actions";
+import { fetchEventTypes, getUserInfo } from "../actions";
 
 export default function useExtensionData() {
 	const [userData, setUserData] = useState<User | null>(null);
@@ -10,6 +10,7 @@ export default function useExtensionData() {
 			setUserData(data.user);
 			setIsLoading(false);
 		});
+		fetchEventTypes().then((data)=>console.log(data))
 	}, []);
 
 	return { userData, isLoading };
