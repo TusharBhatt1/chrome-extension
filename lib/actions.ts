@@ -1,22 +1,14 @@
-const LOCAL_STORAGE_KEY = "cal_user_info";
+import { CHROME_MESSAGE_TYPE } from "@/constant";
+import { userStore } from "./store";
 
-async function getUserInfo() {
-	let cachedData: any = null;
+async function getUserInfo(): Promise<User | null> {
+	let cachedData: User | null = await userStore.getValue();
 
-	try {
-		const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-		if (stored) {
-			cachedData = JSON.parse(stored);
-		}
-	} catch (err) {
-		console.warn("Error parsing cached user info:", err);
-	}
-
-	function fetchSessionFromBackground() {
+	function fetchUserDataFromBackground(): Promise<User | null> {
 		return new Promise((resolve, reject) => {
-			chrome.runtime.sendMessage({ type: "GET_SESSION" }, (response: any) => {
+			chrome.runtime.sendMessage({ type: CHROME_MESSAGE_TYPE.USER_DATA }, (response: any) => {
 				if (response && !response.error) {
-					resolve(response);
+					resolve(response as User);
 				} else {
 					reject(response?.error || "Unknown error");
 				}
@@ -24,38 +16,38 @@ async function getUserInfo() {
 		});
 	}
 
-	const freshDataPromise = fetchSessionFromBackground()
-		.then((freshData: any) => {
-			// If response is empty or invalid, clear local storage and return null
+	const freshDataPromise = fetchUserDataFromBackground()
+		.then(async (freshData) => {
 			if (!freshData || Object.keys(freshData).length === 0) {
-				localStorage.removeItem(LOCAL_STORAGE_KEY);
+				await userStore.setValue(null);
 				return null;
 			}
 
 			if (JSON.stringify(freshData) !== JSON.stringify(cachedData)) {
-				localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(freshData));
+				await userStore.setValue(freshData);
 				return freshData;
 			}
 
 			return cachedData;
 		})
-		.catch((err) => {
+		.catch(async (err) => {
 			console.error("Error fetching user info:", err);
-			localStorage.removeItem(LOCAL_STORAGE_KEY);
+			await userStore.setValue(null);
 			return null;
 		});
 
 	if (cachedData) {
-		freshDataPromise.then(); // trigger update in background
+		freshDataPromise.then(); // trigger background refresh
 		return cachedData;
 	} else {
 		return await freshDataPromise;
 	}
 }
 
+
 const fetchEventTypes = async () => {
 	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage({ type: "GET_EVENT_TYPES" }, (response: any) => {
+		chrome.runtime.sendMessage({ type: CHROME_MESSAGE_TYPE.EVENT_TYPES}, (response: any) => {
 			if (response && !response.error) {
 				resolve(response);
 			} else {

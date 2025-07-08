@@ -6,10 +6,17 @@ export default defineConfig({
 		name: "Cal Copilot",
 		description: "This browser extension helps with Cal.com.",
 		version: "0.0.1",
-    icons:{
-      "32":"icon/logo.png"
-    },
+		icons: {
+			"32": "icon/logo.png",
+		},
 		host_permissions: ["https://app.cal.com/*"],
-		permissions: ["cookies"],
+		permissions: [
+			"cookies",
+			"storage",
+			"contextMenus",
+			"activeTab",
+			"tabs",
+			"scripting",
+		],
 	},
 });
