@@ -54,26 +54,15 @@ async function getUserInfo() {
 }
 
 const fetchEventTypes = async () => {
-	const url =
-		"https://app.cal.com/api/trpc/eventTypes/getEventTypesFromGroup,getEventTypesFromGroup?batch=1&input=%7B%220%22%3A%7B%22json%22%3A%7B%22limit%22%3A10%2C%22group%22%3A%7B%22teamId%22%3Anull%2C%22parentId%22%3Anull%7D%7D%7D%2C%221%22%3A%7B%22json%22%3A%7B%22limit%22%3A10%2C%22searchQuery%22%3A%22%22%2C%22group%22%3A%7B%22teamId%22%3Anull%2C%22parentId%22%3Anull%7D%7D%2C%22meta%22%3A%7B%22values%22%3A%7B%22group.parentId%22%3A%5B%22undefined%22%5D%7D%7D%7D%7D";
-
-	try {
-		const res = await fetch(url, {
-			credentials: "include", // needed if you're logged into Cal
-			headers: {
-				"Content-Type": "application/json",
-			},
+	return new Promise((resolve, reject) => {
+		chrome.runtime.sendMessage({ type: "GET_EVENT_TYPES" }, (response: any) => {
+			if (response && !response.error) {
+				resolve(response);
+			} else {
+				reject(response?.error || "Unknown error");
+			}
 		});
-
-		if (!res.ok) throw new Error("Failed to fetch event types");
-
-		const data = await res.json();
-		console.log("Fetched TRPC data:", data);
-		return data;
-	} catch (err) {
-		console.error("Error fetching event types:", err);
-		return null;
-	}
+	});
 };
 
 export { getUserInfo, fetchEventTypes };
