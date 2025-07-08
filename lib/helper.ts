@@ -1,10 +1,12 @@
-export async function getUserInfo() {
+import { toast } from "sonner";
+
+const handleCopy = async (text: string) => {
 	try {
-		const res = await fetch("https://app.cal.com/api/auth/session");
-		const data = await res.json();
-		return data;
+		await navigator.clipboard.writeText(text);
+		toast.success("Copied")
 	} catch (err) {
-		console.error("getUserInfo error:", err);
-		return null;
+		console.error("Failed to copy:", err);
 	}
-}
+};
+
+export { handleCopy };

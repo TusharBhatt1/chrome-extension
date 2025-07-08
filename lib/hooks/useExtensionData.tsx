@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUserInfo } from "../helper";
+import { getUserInfo } from "../actions";
 
 export default function useExtensionData() {
 	const [userData, setUserData] = useState<User | null>(null);
