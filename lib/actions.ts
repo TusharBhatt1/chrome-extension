@@ -6,13 +6,16 @@ async function getUserInfo(): Promise<User | null> {
 
 	function fetchUserDataFromBackground(): Promise<User | null> {
 		return new Promise((resolve, reject) => {
-			chrome.runtime.sendMessage({ type: CHROME_MESSAGE_TYPE.USER_DATA }, (response: any) => {
-				if (response && !response.error) {
-					resolve(response as User);
-				} else {
-					reject(response?.error || "Unknown error");
+			chrome.runtime.sendMessage(
+				{ type: CHROME_MESSAGE_TYPE.USER_DATA },
+				(response: any) => {
+					if (response && !response.error) {
+						resolve(response as User);
+					} else {
+						reject(response?.error || "Unknown error");
+					}
 				}
-			});
+			);
 		});
 	}
 
@@ -44,17 +47,33 @@ async function getUserInfo(): Promise<User | null> {
 	}
 }
 
-
 const fetchEventTypes = async () => {
 	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage({ type: CHROME_MESSAGE_TYPE.EVENT_TYPES}, (response: any) => {
-			if (response && !response.error) {
-				resolve(response);
-			} else {
-				reject(response?.error || "Unknown error");
+		chrome.runtime.sendMessage(
+			{ type: CHROME_MESSAGE_TYPE.EVENT_TYPES },
+			(response: any) => {
+				if (response && !response.error) {
+					resolve(response);
+				} else {
+					reject(response?.error || "Unknown error");
+				}
 			}
-		});
+		);
+	});
+};
+const fetchBookings = async () => {
+	return new Promise((resolve, reject) => {
+		chrome.runtime.sendMessage(
+			{ type: CHROME_MESSAGE_TYPE.BOOKINGS },
+			(response: any) => {
+				if (response && !response.error) {
+					resolve(response);
+				} else {
+					reject(response?.error || "Unknown error");
+				}
+			}
+		);
 	});
 };
 
-export { getUserInfo, fetchEventTypes };
+export { getUserInfo, fetchEventTypes, fetchBookings };

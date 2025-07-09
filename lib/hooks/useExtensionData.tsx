@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchEventTypes, getUserInfo } from "../actions";
+import { fetchBookings, fetchEventTypes, getUserInfo } from "../actions";
 
 export default function useExtensionData() {
 	const [userData, setUserData] = useState<User | null>(null);
@@ -10,7 +10,7 @@ export default function useExtensionData() {
 			setUserData(data);
 			setIsLoading(false);
 		});
-		fetchEventTypes().then((data) => console.log(data));
+		fetchBookings().then((data) => console.log(data)).catch((e)=>console.log(e))
 	}, []);
 
 	return { userData, isLoading };

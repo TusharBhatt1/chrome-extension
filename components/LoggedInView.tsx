@@ -5,9 +5,11 @@ import {
 } from "@/components/ui/tooltip";
 import { handleCopy } from "@/lib/helper";
 import { Link } from "lucide-react";
+import Events from "./Events";
 
 export default function LoggedInView({ userData }: { userData: User }) {
 	return (
+		<div>
 		<div className="flex justify-between items-center">
 			<p>👋 Welcome, {userData.name || "User"}!</p>
 			<Tooltip>
@@ -21,6 +23,8 @@ export default function LoggedInView({ userData }: { userData: User }) {
 					<p>Copy link</p>
 				</TooltipContent>
 			</Tooltip>
+		</div>
+		<Events/>
 		</div>
 	);
 }
