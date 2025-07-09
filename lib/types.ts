@@ -4,10 +4,12 @@ interface User {
 }
 interface Booking {
 	title: string;
-	uuid: string;
+	uid: string;
 	startTime: string;
-	endTime:string;
-	videoCallUrl: string;
+	endTime: string;
+	metadata: {
+		videoCallUrl: string;
+	};
 	user: {
 		name: string;
 	};

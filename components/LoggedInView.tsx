@@ -5,8 +5,8 @@ import {
 } from "@/components/ui/tooltip";
 import { handleCopy } from "@/lib/helper";
 import { Link } from "lucide-react";
-import Events from "./Events";
 import { User } from "@/lib/types";
+import Bookings from "./Bookings";
 
 export default function LoggedInView({ userData }: { userData: User }) {
 	return (
@@ -16,7 +16,7 @@ export default function LoggedInView({ userData }: { userData: User }) {
 			<Tooltip>
 				<TooltipTrigger
 					onClick={() => handleCopy(`https://cal.com/${userData.username}`)}
-					className="border-slate-100  cursor-pointer border p-1 rounded-md"
+					className="border-slate-400  cursor-pointer border p-1 rounded-md"
 				>
 					<Link size={14} />
 				</TooltipTrigger>
@@ -25,7 +25,7 @@ export default function LoggedInView({ userData }: { userData: User }) {
 				</TooltipContent>
 			</Tooltip>
 		</div>
-		<Events/>
+		<Bookings/>
 		</div>
 	);
 }
