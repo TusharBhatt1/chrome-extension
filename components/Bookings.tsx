@@ -96,11 +96,23 @@ export default function Bookings() {
 				</TabsList>
 
 				<TabsContent value="upcoming" className="text-sm">
-					{bookings ? renderBookings : <LoaderCircle className="animate-spin" />}
+					{bookings ? (
+						renderBookings
+					) : (
+						<div className="flex items-center justify-center min-h-12">
+							<LoaderCircle className="animate-spin text-muted-foreground" />
+						</div>
+					)}{" "}
 				</TabsContent>
 
 				<TabsContent value="past" className="text-sm">
-					{bookings ? renderBookings : <LoaderCircle className="animate-spin" />}
+					{bookings ? (
+						renderBookings
+					) : (
+						<div className="flex items-center justify-center min-h-12">
+							<LoaderCircle className="animate-spin text-muted-foreground" />
+						</div>
+					)}{" "}
 				</TabsContent>
 			</Tabs>
 		</div>
