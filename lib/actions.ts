@@ -8,7 +8,7 @@ async function getUserInfo(): Promise<User | null> {
 	function fetchUserDataFromBackground(): Promise<User | null> {
 		return new Promise((resolve, reject) => {
 			chrome.runtime.sendMessage(
-				{ type: CHROME_MESSAGE_TYPE.USER_DATA },
+				{ type: CHROME_MESSAGE_TYPE.GET_USER_SESSION },
 				(response: any) => {
 					if (response && !response.error) {
 						resolve(response as User);
@@ -51,7 +51,7 @@ async function getUserInfo(): Promise<User | null> {
 const fetchEventTypes = async () => {
 	return new Promise((resolve, reject) => {
 		chrome.runtime.sendMessage(
-			{ type: CHROME_MESSAGE_TYPE.EVENT_TYPES },
+			{ type: CHROME_MESSAGE_TYPE.GET_EVENT_TYPES },
 			(response: any) => {
 				if (response && !response.error) {
 					resolve(response);
@@ -62,10 +62,17 @@ const fetchEventTypes = async () => {
 		);
 	});
 };
-const fetchBookings = async (): Promise<{ bookings: Booking[] } | null> => {
+const fetchBookings = async (
+	status: "upcoming" | "past"
+): Promise<{ bookings: Booking[] } | null> => {
 	return new Promise((resolve, reject) => {
 		chrome.runtime.sendMessage(
-			{ type: CHROME_MESSAGE_TYPE.BOOKINGS },
+			{
+				type:
+					status === "upcoming"
+						? CHROME_MESSAGE_TYPE.GET_UPCOMING_BOOKINGS
+						: CHROME_MESSAGE_TYPE.GET_PAST_BOOKINGS,
+			},
 			(response: any) => {
 				if (response && !response.error) {
 					resolve(response);

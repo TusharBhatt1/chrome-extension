@@ -9,6 +9,5 @@ export function cn(...inputs: ClassValue[]) {
 export function extractJson<T>(
 	response: any[]
 ): T | null {
-  console.log(response)
 	return response?.[0]?.result?.data?.json || null;
 }
