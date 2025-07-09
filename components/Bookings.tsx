@@ -17,7 +17,7 @@ export default function Bookings() {
 	console.log(bookings);
 	const renderBookings = useMemo(
 		() => (
-			<div className="text-sm mt-3 space-y-3">
+			<div className="text-sm mt-3 space-y-3 max-h-72 overflow-auto">
 				{bookings?.map(
 					({ title, uid, metadata, attendees, startTime, endTime }, i) => {
 						const names = (attendees || []).map((a: any) => a.name);
@@ -99,7 +99,7 @@ export default function Bookings() {
 					{renderBookings}
 				</TabsContent>
 
-				<TabsContent value="past" className="text-sm text-muted-foreground">
+				<TabsContent value="past" className="text-sm">
 					{renderBookings}
 				</TabsContent>
 			</Tabs>
