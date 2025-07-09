@@ -2,7 +2,7 @@ import { CHROME_MESSAGE_TYPE } from "@/constant";
 import { userStore } from "./store";
 import { Booking, User } from "./types";
 
-async function getUserInfo(onUpdate?: (user: User | null) => void): Promise<User | null> {
+async function fetchUserInfo(onUpdate?: (user: User | null) => void): Promise<User | null> {
 	const cachedData = await userStore.getValue();
 
 	function fetchUserDataFromBackground(): Promise<User | null> {
@@ -81,4 +81,4 @@ const fetchEventTypes = async () => {
 	});
 };
 
-export { getUserInfo, fetchEventTypes, fetchBookings };
+export { fetchUserInfo, fetchEventTypes, fetchBookings };

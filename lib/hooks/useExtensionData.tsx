@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchBookings, getUserInfo } from "../actions";
+import { fetchBookings, fetchUserInfo } from "../actions";
 import { extractJson } from "../utils";
 import { Booking, User } from "../types";
 
@@ -12,7 +12,7 @@ export default function useExtensionData() {
 	useEffect(() => {
 		const loadUserData = async () => {
 			try {
-				const cache = await getUserInfo((fresh) => {
+				const cache = await fetchUserInfo((fresh) => {
 					if (fresh) setUserData(fresh);
 				});
 				setUserData(cache);
