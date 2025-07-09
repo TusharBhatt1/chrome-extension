@@ -12,8 +12,10 @@ export default function useExtensionData() {
 	useEffect(() => {
 		const loadUserData = async () => {
 			try {
-				const user = await getUserInfo();
-				setUserData(user);
+				const cache = await getUserInfo((fresh) => {
+					if (fresh) setUserData(fresh);
+				});
+				setUserData(cache);
 			} catch (err) {
 				console.error("Failed to fetch user info:", err);
 			} finally {
@@ -26,7 +28,7 @@ export default function useExtensionData() {
 
 	useEffect(() => {
 		const loadBookings = async () => {
-			console.log("calling again with: ",showUpcomingBookings)
+			console.log("calling again with: ", showUpcomingBookings)
 			try {
 				const data = await fetchBookings(
 					showUpcomingBookings ? "upcoming" : "past"

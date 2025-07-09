@@ -2,8 +2,8 @@ import { CHROME_MESSAGE_TYPE } from "@/constant";
 import { userStore } from "./store";
 import { Booking, User } from "./types";
 
-async function getUserInfo(): Promise<User | null> {
-	let cachedData: User | null = await userStore.getValue();
+async function getUserInfo(onUpdate?: (user: User | null) => void): Promise<User | null> {
+	const cachedData = await userStore.getValue();
 
 	function fetchUserDataFromBackground(): Promise<User | null> {
 		return new Promise((resolve, reject) => {
@@ -20,48 +20,30 @@ async function getUserInfo(): Promise<User | null> {
 		});
 	}
 
-	const freshDataPromise = fetchUserDataFromBackground()
+	// Begin background fetch
+	fetchUserDataFromBackground()
 		.then(async (freshData) => {
 			if (!freshData || Object.keys(freshData).length === 0) {
 				await userStore.setValue(null);
-				return null;
+				onUpdate?.(null);
+				return;
 			}
 
 			if (JSON.stringify(freshData) !== JSON.stringify(cachedData)) {
 				await userStore.setValue(freshData);
-				return freshData;
+				onUpdate?.(freshData); // notify change
 			}
-
-			return cachedData;
 		})
 		.catch(async (err) => {
 			console.error("Error fetching user info:", err);
 			await userStore.setValue(null);
-			return null;
+			onUpdate?.(null);
 		});
 
-	if (cachedData) {
-		freshDataPromise.then(); // trigger background refresh
-		return cachedData;
-	} else {
-		return await freshDataPromise;
-	}
+	return cachedData;
 }
 
-const fetchEventTypes = async () => {
-	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage(
-			{ type: CHROME_MESSAGE_TYPE.GET_EVENT_TYPES },
-			(response: any) => {
-				if (response && !response.error) {
-					resolve(response);
-				} else {
-					reject(response?.error || "Unknown error");
-				}
-			}
-		);
-	});
-};
+
 const fetchBookings = async (
 	status: "upcoming" | "past"
 ): Promise<{ bookings: Booking[] } | null> => {
@@ -73,6 +55,21 @@ const fetchBookings = async (
 						? CHROME_MESSAGE_TYPE.GET_UPCOMING_BOOKINGS
 						: CHROME_MESSAGE_TYPE.GET_PAST_BOOKINGS,
 			},
+			(response: any) => {
+				if (response && !response.error) {
+					resolve(response);
+				} else {
+					reject(response?.error || "Unknown error");
+				}
+			}
+		);
+	});
+};
+
+const fetchEventTypes = async () => {
+	return new Promise((resolve, reject) => {
+		chrome.runtime.sendMessage(
+			{ type: CHROME_MESSAGE_TYPE.GET_EVENT_TYPES },
 			(response: any) => {
 				if (response && !response.error) {
 					resolve(response);
