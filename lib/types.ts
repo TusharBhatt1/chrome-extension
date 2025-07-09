@@ -6,6 +6,7 @@ interface Booking {
 	title: string;
 	uuid: string;
 	startTime: string;
+	endTime:string;
 	videoCallUrl: string;
 	user: {
 		name: string;
