@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import useExtensionData from "@/lib/hooks/useExtensionData";
-import { SquareArrowOutUpRight } from "lucide-react";
+import { Loader, LoaderCircle, SquareArrowOutUpRight } from "lucide-react";
 import {
 	Tooltip,
 	TooltipTrigger,
@@ -96,11 +96,11 @@ export default function Bookings() {
 				</TabsList>
 
 				<TabsContent value="upcoming" className="text-sm">
-					{renderBookings}
+					{bookings ? renderBookings : <LoaderCircle className="animate-spin" />}
 				</TabsContent>
 
 				<TabsContent value="past" className="text-sm">
-					{renderBookings}
+					{bookings ? renderBookings : <LoaderCircle className="animate-spin" />}
 				</TabsContent>
 			</Tabs>
 		</div>
