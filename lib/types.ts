@@ -18,6 +18,7 @@ interface Booking {
 		name: string;
 		email: string;
 		timeZone: string;
+		noShow?: boolean;
 	}[];
 }
 

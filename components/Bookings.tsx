@@ -13,8 +13,6 @@ export default function Bookings() {
 	const { bookings, showUpcomingBookings, setShowUpcomingBookings } =
 		useExtensionData();
 
-	// if (!bookings) return null;
-	console.log(bookings);
 	const renderBookings = useMemo(
 		() => (
 			<div className="text-sm mt-3 space-y-3 max-h-72 overflow-auto">
