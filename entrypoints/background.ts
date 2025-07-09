@@ -4,7 +4,7 @@ import { URLs, PAYLOADS } from "@/lib/urls-and-payloads";
 export default defineBackground(() => {
 	chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 		if (msg.type === CHROME_MESSAGE_TYPE.USER_DATA) {
-			fetch("https://app.cal.com/api/auth/session", {
+			fetch(URLs.USER_SESSION, {
 				credentials: "include",
 			})
 				.then((res) => res.json())

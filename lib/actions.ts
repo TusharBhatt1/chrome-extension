@@ -1,5 +1,6 @@
 import { CHROME_MESSAGE_TYPE } from "@/constant";
 import { userStore } from "./store";
+import { Booking, User } from "./types";
 
 async function getUserInfo(): Promise<User | null> {
 	let cachedData: User | null = await userStore.getValue();
@@ -61,7 +62,7 @@ const fetchEventTypes = async () => {
 		);
 	});
 };
-const fetchBookings = async () => {
+const fetchBookings = async (): Promise<{ bookings: Booking[] } | null> => {
 	return new Promise((resolve, reject) => {
 		chrome.runtime.sendMessage(
 			{ type: CHROME_MESSAGE_TYPE.BOOKINGS },
