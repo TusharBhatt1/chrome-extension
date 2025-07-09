@@ -6,10 +6,11 @@ import {
 import { handleCopy } from "@/lib/helper";
 import { Link } from "lucide-react";
 import Events from "./Events";
+import { User } from "@/lib/types";
 
 export default function LoggedInView({ userData }: { userData: User }) {
 	return (
-		<div>
+		<div className="space-y-4">
 		<div className="flex justify-between items-center">
 			<p>👋 Welcome, {userData.name || "User"}!</p>
 			<Tooltip>
