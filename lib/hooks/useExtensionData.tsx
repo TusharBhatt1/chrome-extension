@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchBookings, fetchEventTypes, getUserInfo } from "../actions";
+import { fetchBookings, getUserInfo } from "../actions";
 import { extractJson } from "../utils";
 import { Booking, User } from "../types";
 
