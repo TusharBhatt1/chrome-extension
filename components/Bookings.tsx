@@ -22,8 +22,10 @@ export default function Bookings() {
 	const { bookings, showUpcomingBookings, setShowUpcomingBookings } =
 		useExtensionData();
 
-	const isPastBookings =
-		!!bookings && new Date(bookings[0].endTime) < new Date();
+	const isPastBookings = useMemo(
+		() => !!bookings && new Date(bookings[0].endTime) < new Date(),
+		[bookings]
+	);
 
 	const renderBookings = useMemo(
 		() => (
