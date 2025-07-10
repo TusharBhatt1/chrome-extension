@@ -1,13 +1,20 @@
 import { format } from "date-fns";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import useExtensionData from "@/lib/hooks/useExtensionData";
-import { Loader, LoaderCircle, SquareArrowOutUpRight } from "lucide-react";
+import { LoaderCircle, SquareArrowOutUpRight,Eye,EyeClosed } from "lucide-react";
 import {
 	Tooltip,
 	TooltipTrigger,
 	TooltipContent,
 } from "@/components/ui/tooltip";
 import { useMemo } from "react";
+import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
+import {
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
 
 export default function Bookings() {
 	const { bookings, showUpcomingBookings, setShowUpcomingBookings } =
@@ -35,7 +42,7 @@ export default function Bookings() {
 									<p key={i}>
 										{title}{" "}
 										<>
-										{!showUpcomingBookings &&	`${label} ${shown}`}
+											{!showUpcomingBookings && `${label} ${shown}`}
 											{remaining > 0 && ` +${remaining} more`}
 										</>
 									</p>
@@ -55,13 +62,34 @@ export default function Bookings() {
 											<p>Go to booking</p>
 										</TooltipContent>
 									</Tooltip>
-									<a
-										target="_blank"
-										className="underline"
-										href={metadata.videoCallUrl}
-									>
-										Join
-									</a>
+									{showUpcomingBookings ? (
+										<a
+											target="_blank"
+											className="underline"
+											href={metadata.videoCallUrl}
+										>
+											Join
+										</a>
+									) : (
+										<DropdownMenu>
+											<DropdownMenuTrigger asChild>
+												<Button variant="outline" size="sm">
+													Mark
+												</Button>
+											</DropdownMenuTrigger>
+											<DropdownMenuContent>
+												{attendees?.map((attendee: any, index: number) => (
+													<DropdownMenuItem
+														key={index}
+														// onClick={() => handleToggleNoShow(uid, attendee.name)}
+													>
+														{attendee.name} —{" "}
+														{attendee.noShow ? <EyeClosed/> : <Eye/>}
+													</DropdownMenuItem>
+												))}
+											</DropdownMenuContent>
+										</DropdownMenu>
+									)}
 								</div>
 							</div>
 						);
