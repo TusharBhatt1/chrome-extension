@@ -19,8 +19,12 @@ import { markShowNoShow } from "@/lib/actions";
 import { toast } from "sonner";
 
 export default function Bookings() {
-	const { bookings, showUpcomingBookings, setShowUpcomingBookings } =
-		useExtensionData();
+	const {
+		bookings,
+		setBookings,
+		showUpcomingBookings,
+		setShowUpcomingBookings,
+	} = useExtensionData();
 
 	const isPastBookings = useMemo(
 		() => !!bookings && new Date(bookings[0].endTime) < new Date(),
@@ -99,13 +103,33 @@ export default function Bookings() {
 																		},
 																	],
 																})
-																	.then(() =>
+																	.then(() => {
+																		setBookings(
+																			(prevBookings) =>
+																				prevBookings?.map((booking) =>
+																					booking.uid === uid
+																						? {
+																								...booking,
+																								attendees:
+																									booking.attendees.map(
+																										(attendee) =>
+																											attendee.email === email
+																												? {
+																														...attendee,
+																														noShow: !noShow,
+																												  }
+																												: attendee
+																									),
+																						  }
+																						: booking
+																				) || null
+																		);
 																		toast.success(
 																			`${name} marked as ${
 																				noShow ? " show" : "no show"
 																			}`
-																		)
-																	)
+																		);
+																	})
 																	.catch(() =>
 																		toast.error("Something went wrong !")
 																	)
