@@ -46,7 +46,7 @@ export default function Bookings() {
 
 						const formattedDate = format(start, "EEE, dd MMM");
 						const formattedTime = `${format(start, "p")} - ${format(end, "p")}`;
-						// 15 Min Meeting between Tushar Bhatt and Tushar between You and Tushar
+
 						return (
 							<div className="bg-neutral-100 p-2 rounded-md flex justify-between items-center">
 								<div>
