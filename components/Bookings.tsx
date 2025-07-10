@@ -1,12 +1,7 @@
 import { format } from "date-fns";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import useExtensionData from "@/lib/hooks/useExtensionData";
-import {
-	LoaderCircle,
-	SquareArrowOutUpRight,
-	Eye,
-	EyeOff,
-} from "lucide-react";
+import { LoaderCircle, SquareArrowOutUpRight, Eye, EyeOff } from "lucide-react";
 import {
 	Tooltip,
 	TooltipTrigger,
@@ -100,7 +95,20 @@ export default function Bookings() {
 																})
 															}
 														>
-															{name} — {noShow ? <EyeOff /> : <Eye />}
+															<>
+																<Tooltip>
+																	<TooltipTrigger asChild>
+																		<span className="flex items-center gap-2">
+																			{name} — {noShow ? <EyeOff /> : <Eye />}
+																		</span>
+																	</TooltipTrigger>
+																	<TooltipContent>
+																		<span>
+																			{noShow ? "Mark show" : "Mark no show"}
+																		</span>
+																	</TooltipContent>
+																</Tooltip>
+															</>{" "}
 														</DropdownMenuItem>
 													)
 												)}
