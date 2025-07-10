@@ -19,19 +19,23 @@ export default function Bookings() {
 				{bookings?.map(
 					({ title, uid, metadata, attendees, startTime, endTime }, i) => {
 						const names = (attendees || []).map((a: any) => a.name);
+						const shown = names.slice(0, 2).join(", ");
 						const remaining = names.length - 2;
+						const label = "between You and";
 
 						const start = new Date(startTime);
 						const end = new Date(endTime);
 
 						const formattedDate = format(start, "EEE, dd MMM");
 						const formattedTime = `${format(start, "p")} - ${format(end, "p")}`;
+						// 15 Min Meeting between Tushar Bhatt and Tushar between You and Tushar
 						return (
 							<div className="bg-neutral-100 p-2 rounded-md flex justify-between items-center">
 								<div>
 									<p key={i}>
 										{title}{" "}
 										<>
+										{!showUpcomingBookings &&	`${label} ${shown}`}
 											{remaining > 0 && ` +${remaining} more`}
 										</>
 									</p>

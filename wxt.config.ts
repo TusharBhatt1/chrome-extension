@@ -7,7 +7,7 @@ export default defineConfig({
 		description: "This browser extension helps with Cal.com.",
 		version: "0.0.1",
 		icons: {
-			"32": "icon/logo.png",
+			"32": "icon/cal-logo.png",
 		},
 		host_permissions: ["https://app.cal.com/*"],
 		permissions: [
