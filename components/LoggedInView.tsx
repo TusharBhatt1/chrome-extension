@@ -7,7 +7,7 @@ import { handleCopy } from "@/lib/helper";
 import { Link } from "lucide-react";
 import { User } from "@/lib/types";
 import Bookings from "./Bookings";
-import CalLogo from "@/public/cal-logo.png";
+import CalLogo from "@/assets/cal-logo.png";
 export default function LoggedInView({ userData }: { userData: User }) {
 	return (
 		<div className="space-y-4">
