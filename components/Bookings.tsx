@@ -16,10 +16,14 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { markShowNoShow } from "@/lib/actions";
+import { toast } from "sonner";
 
 export default function Bookings() {
 	const { bookings, showUpcomingBookings, setShowUpcomingBookings } =
 		useExtensionData();
+
+	const isPastBookings =
+		!!bookings && new Date(bookings[0].endTime) < new Date();
 
 	const renderBookings = useMemo(
 		() => (
@@ -93,6 +97,16 @@ export default function Bookings() {
 																		},
 																	],
 																})
+																	.then(() =>
+																		toast.success(
+																			`${name} marked as ${
+																				noShow ? " show" : "no show"
+																			}`
+																		)
+																	)
+																	.catch(() =>
+																		toast.error("Something went wrong !")
+																	)
 															}
 														>
 															<>
@@ -138,6 +152,7 @@ export default function Bookings() {
 						Upcoming
 					</TabsTrigger>
 					<TabsTrigger
+						disabled={!bookings}
 						onClick={() => setShowUpcomingBookings(false)}
 						value="past"
 						className="w-full"
@@ -147,7 +162,7 @@ export default function Bookings() {
 				</TabsList>
 
 				<TabsContent value="upcoming" className="text-sm">
-					{bookings ? (
+					{bookings && !isPastBookings ? (
 						renderBookings
 					) : (
 						<div className="flex items-center justify-center min-h-12">
@@ -157,7 +172,7 @@ export default function Bookings() {
 				</TabsContent>
 
 				<TabsContent value="past" className="text-sm">
-					{bookings ? (
+					{isPastBookings ? (
 						renderBookings
 					) : (
 						<div className="flex items-center justify-center min-h-12">
