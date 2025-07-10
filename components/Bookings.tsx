@@ -1,7 +1,12 @@
 import { format } from "date-fns";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import useExtensionData from "@/lib/hooks/useExtensionData";
-import { LoaderCircle, SquareArrowOutUpRight,Eye,EyeClosed } from "lucide-react";
+import {
+	LoaderCircle,
+	SquareArrowOutUpRight,
+	Eye,
+	EyeOff,
+} from "lucide-react";
 import {
 	Tooltip,
 	TooltipTrigger,
@@ -15,6 +20,7 @@ import {
 	DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
+import { markShowNoShow } from "@/lib/actions";
 
 export default function Bookings() {
 	const { bookings, showUpcomingBookings, setShowUpcomingBookings } =
@@ -78,15 +84,26 @@ export default function Bookings() {
 												</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent>
-												{attendees?.map((attendee: any, index: number) => (
-													<DropdownMenuItem
-														key={index}
-														// onClick={() => handleToggleNoShow(uid, attendee.name)}
-													>
-														{attendee.name} —{" "}
-														{attendee.noShow ? <EyeClosed/> : <Eye/>}
-													</DropdownMenuItem>
-												))}
+												{attendees?.map(
+													({ name, email, noShow }, index: number) => (
+														<DropdownMenuItem
+															key={index}
+															onClick={() =>
+																markShowNoShow({
+																	bookingUid: uid,
+																	attendees: [
+																		{
+																			email: email,
+																			noShow: !noShow,
+																		},
+																	],
+																})
+															}
+														>
+															{name} — {noShow ? <EyeOff /> : <Eye />}
+														</DropdownMenuItem>
+													)
+												)}
 											</DropdownMenuContent>
 										</DropdownMenu>
 									)}

@@ -68,5 +68,22 @@ export default defineBackground(() => {
 
 			return true;
 		}
+		if (msg.type === CHROME_MESSAGE_TYPE.MARK_SHOW_NOSHOW) {
+			const { payLoad } = msg;
+
+			fetch(URLs.MARK_SHOW_NOSHOW, {
+				method: "POST",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ 0: { json: payLoad } }),
+			})
+				.then((res) => res.json())
+				.then((data) => sendResponse(data))
+				.catch((err) => sendResponse({ error: err.message }));
+
+			return true;
+		}
 	});
 });

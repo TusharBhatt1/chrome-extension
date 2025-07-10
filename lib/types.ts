@@ -22,4 +22,12 @@ interface Booking {
 	}[];
 }
 
-export { User, Booking };
+interface MarkShowNoShowPayload {
+	bookingUid: string;
+	attendees: {
+		email: string;
+		noShow: boolean;
+	}[];
+}
+
+export { User, Booking, MarkShowNoShowPayload };

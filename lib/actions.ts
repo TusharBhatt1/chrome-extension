@@ -1,8 +1,10 @@
 import { CHROME_MESSAGE_TYPE } from "@/constant";
 import { userStore } from "./store";
-import { Booking, User } from "./types";
+import { Booking, MarkShowNoShowPayload, User } from "./types";
 
-async function fetchUserInfo(onUpdate?: (user: User | null) => void): Promise<User | null> {
+async function fetchUserInfo(
+	onUpdate?: (user: User | null) => void
+): Promise<User | null> {
 	const cachedData = await userStore.getValue();
 
 	function fetchUserDataFromBackground(): Promise<User | null> {
@@ -43,7 +45,6 @@ async function fetchUserInfo(onUpdate?: (user: User | null) => void): Promise<Us
 	return cachedData;
 }
 
-
 const fetchBookings = async (
 	status: "upcoming" | "past"
 ): Promise<{ bookings: Booking[] } | null> => {
@@ -81,4 +82,19 @@ const fetchEventTypes = async () => {
 	});
 };
 
-export { fetchUserInfo, fetchEventTypes, fetchBookings };
+const markShowNoShow = async (payLoad: MarkShowNoShowPayload) => {
+	return new Promise((resolve, reject) => {
+		chrome.runtime.sendMessage(
+			{ type: CHROME_MESSAGE_TYPE.MARK_SHOW_NOSHOW, payLoad },
+			(response: any) => {
+				if (response && !response.error) {
+					resolve(response);
+				} else {
+					reject(response?.error || "Unknown error");
+				}
+			}
+		);
+	});
+};
+
+export { fetchUserInfo, fetchEventTypes, fetchBookings, markShowNoShow };

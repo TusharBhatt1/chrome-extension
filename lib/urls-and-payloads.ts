@@ -3,6 +3,8 @@ const URLs = {
 	EVENT_TYPES:
 		"https://app.cal.com/api/trpc/eventTypes/getEventTypesFromGroup,getEventTypesFromGroup?batch=1",
 	BOOKINGS: "https://app.cal.com/api/trpc/bookings/get?batch=1",
+	MARK_SHOW_NOSHOW:
+		"https://app.cal.com/api/trpc/loggedInViewerRouter/markNoShow?batch=1",
 };
 
 const PAYLOADS = {
