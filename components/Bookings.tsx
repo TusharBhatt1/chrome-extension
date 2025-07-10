@@ -19,7 +19,6 @@ export default function Bookings() {
 				{bookings?.map(
 					({ title, uid, metadata, attendees, startTime, endTime }, i) => {
 						const names = (attendees || []).map((a: any) => a.name);
-						const shown = names.slice(0, 2).join(", ");
 						const remaining = names.length - 2;
 
 						const start = new Date(startTime);
