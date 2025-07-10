@@ -1,5 +1,5 @@
 import { CHROME_MESSAGE_TYPE } from "@/constant";
-import { userStore } from "./store";
+import { pastBookingsStore, upcomingBookingsStore, userStore } from "./store";
 import { Booking, MarkShowNoShowPayload, User } from "./types";
 
 async function fetchUserInfo(
@@ -47,7 +47,12 @@ async function fetchUserInfo(
 
 const fetchBookings = async (
 	status: "upcoming" | "past"
-): Promise<{ bookings: Booking[] } | null> => {
+): Promise<Booking[] | null> => {
+	const currentStore =
+		status === "upcoming" ? upcomingBookingsStore : pastBookingsStore;
+	const savedData = await currentStore.getValue();
+	if (savedData) return savedData;
+
 	return new Promise((resolve, reject) => {
 		chrome.runtime.sendMessage(
 			{
@@ -58,6 +63,8 @@ const fetchBookings = async (
 			},
 			(response: any) => {
 				if (response && !response.error) {
+					console.log(response);
+					currentStore.setValue(response);
 					resolve(response);
 				} else {
 					reject(response?.error || "Unknown error");
