@@ -8,6 +8,7 @@ import { Link } from "lucide-react";
 import { User } from "@/lib/types";
 import Bookings from "./Bookings";
 import CalLogo from "@/assets/cal-logo.png";
+import { Button } from "./ui/button";
 export default function LoggedInView({ userData }: { userData: User }) {
 	return (
 		<div className="space-y-4">
@@ -29,6 +30,9 @@ export default function LoggedInView({ userData }: { userData: User }) {
 				</Tooltip>
 			</div>
 			<Bookings />
+			<a href="https://app.cal.com" target="_blank">
+				<Button className="w-full">Go to the App</Button>
+			</a>
 		</div>
 	);
 }

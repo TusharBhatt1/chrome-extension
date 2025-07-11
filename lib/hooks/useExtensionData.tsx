@@ -5,8 +5,10 @@ import { Booking, User } from "../types";
 
 export default function useExtensionData() {
 	const [userData, setUserData] = useState<User | null>(null);
-	const [bookings, setBookings] = useState<Booking[] | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+	const [upcomingBookings, setUpcomingBookings] = useState<Booking[] | null>(null);
+	const [pastBookings, setPastBookings] = useState<Booking[] | null>(null);
+	const [isLoadingUpcoming, setIsLoadingUpcoming] = useState(true);
+	const [isLoadingPast, setIsLoadingPast] = useState(true);
 	const [showUpcomingBookings, setShowUpcomingBookings] = useState(true);
 
 	useEffect(() => {
@@ -19,30 +21,61 @@ export default function useExtensionData() {
 			} catch (err) {
 				console.error("Failed to fetch user info:", err);
 			} finally {
-				setIsLoading(false);
+				// No change here
 			}
 		};
-
 		loadUserData();
 	}, []);
 
+	// Upcoming bookings
 	useEffect(() => {
-		const loadBookings = async () => {
-			console.log("calling again with: ", showUpcomingBookings)
+		const loadUpcoming = async () => {
+			setIsLoadingUpcoming(true);
 			try {
 				const data = await fetchBookings(
-					showUpcomingBookings ? "upcoming" : "past"
+					"upcoming",
+					(freshData) => {
+						const { bookings } = extractJson<{ bookings: Booking[] }>(Array.isArray(freshData) ? freshData : []) || {};
+						setUpcomingBookings(bookings || null);
+					}
 				);
-				//@ts-expect-error will fix later
-				const { bookings } = extractJson<{ bookings: Booking[] }>(data) || {};
-
-				setBookings(bookings || null);
+				const { bookings } = extractJson<{ bookings: Booking[] }>(Array.isArray(data) ? data : []) || {};
+				setUpcomingBookings(bookings || null);
 			} catch (err) {
-				console.error("Failed to fetch bookings:", err);
+				console.error("Failed to fetch upcoming bookings:", err);
+			} finally {
+				setIsLoadingUpcoming(false);
 			}
 		};
-		loadBookings();
-	}, [showUpcomingBookings]);
+		loadUpcoming();
+	}, []);
+
+	// Past bookings
+	useEffect(() => {
+		const loadPast = async () => {
+			setIsLoadingPast(true);
+			try {
+				const data = await fetchBookings(
+					"past",
+					(freshData) => {
+						const { bookings } = extractJson<{ bookings: Booking[] }>(Array.isArray(freshData) ? freshData : []) || {};
+						setPastBookings(bookings || null);
+					}
+				);
+				const { bookings } = extractJson<{ bookings: Booking[] }>(Array.isArray(data) ? data : []) || {};
+				setPastBookings(bookings || null);
+			} catch (err) {
+				console.error("Failed to fetch past bookings:", err);
+			} finally {
+				setIsLoadingPast(false);
+			}
+		};
+		loadPast();
+	}, []);
+
+	const bookings = showUpcomingBookings ? upcomingBookings : pastBookings;
+	const isLoading = showUpcomingBookings ? isLoadingUpcoming : isLoadingPast;
+	const setBookings = showUpcomingBookings ? setUpcomingBookings : setPastBookings;
 
 	return {
 		userData,

@@ -26,10 +26,10 @@ export default function Bookings() {
 		setShowUpcomingBookings,
 	} = useExtensionData();
 
-	const isPastBookings = useMemo(
-		() => !!bookings && new Date(bookings[0].endTime) < new Date(),
-		[bookings]
-	);
+	// const isPastBookings = useMemo(
+	// 	() => !!bookings && new Date(bookings[0].endTime) < new Date(),
+	// 	[bookings]
+	// );
 
 	const renderBookings = useMemo(
 		() => (
@@ -70,7 +70,7 @@ export default function Bookings() {
 											</a>
 										</TooltipTrigger>
 										<TooltipContent>
-											<p>Go to booking</p>
+											<p>Go to the booking</p>
 										</TooltipContent>
 									</Tooltip>
 									{showUpcomingBookings ? (
@@ -162,7 +162,7 @@ export default function Bookings() {
 				)}
 			</div>
 		),
-		[showUpcomingBookings, bookings]
+		[bookings]
 	);
 
 	return (
@@ -188,7 +188,7 @@ export default function Bookings() {
 				</TabsList>
 
 				<TabsContent value="upcoming" className="text-sm">
-					{bookings && !isPastBookings ? (
+					{bookings ? (
 						renderBookings
 					) : (
 						<div className="flex items-center justify-center min-h-12">
@@ -198,7 +198,7 @@ export default function Bookings() {
 				</TabsContent>
 
 				<TabsContent value="past" className="text-sm">
-					{isPastBookings ? (
+					{true ? (
 						renderBookings
 					) : (
 						<div className="flex items-center justify-center min-h-12">

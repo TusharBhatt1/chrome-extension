@@ -45,33 +45,59 @@ async function fetchUserInfo(
 	return cachedData;
 }
 
-const fetchBookings = async (
-	status: "upcoming" | "past"
-): Promise<Booking[] | null> => {
-	const currentStore =
-		status === "upcoming" ? upcomingBookingsStore : pastBookingsStore;
-	const savedData = await currentStore.getValue();
-	if (savedData) return savedData;
+// Utility for deep equality
+function deepEqual(a: any, b: any): boolean {
+  return JSON.stringify(a) === JSON.stringify(b);
+}
 
-	return new Promise((resolve, reject) => {
-		chrome.runtime.sendMessage(
-			{
-				type:
-					status === "upcoming"
-						? CHROME_MESSAGE_TYPE.GET_UPCOMING_BOOKINGS
-						: CHROME_MESSAGE_TYPE.GET_PAST_BOOKINGS,
-			},
-			(response: any) => {
-				if (response && !response.error) {
-					console.log(response);
-					currentStore.setValue(response);
-					resolve(response);
-				} else {
-					reject(response?.error || "Unknown error");
-				}
-			}
-		);
-	});
+const fetchBookings = async (
+  status: "upcoming" | "past",
+  onFreshData?: (freshData: Booking[] | null) => void
+): Promise<Booking[] | null> => {
+  const currentStore =
+    status === "upcoming" ? upcomingBookingsStore : pastBookingsStore;
+  const savedData = await currentStore.getValue();
+
+  // Background fetch for fresh data
+  const fetchFresh = async () => {
+    return new Promise<Booking[] | null>((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          type:
+            status === "upcoming"
+              ? CHROME_MESSAGE_TYPE.GET_UPCOMING_BOOKINGS
+              : CHROME_MESSAGE_TYPE.GET_PAST_BOOKINGS,
+        },
+        async (response: any) => {
+          if (response && !response.error) {
+            if (!deepEqual(response, savedData)) {
+              await currentStore.setValue(response);
+              if (onFreshData) onFreshData(response);
+            }
+            resolve(response);
+          } else {
+            reject(response?.error || "Unknown error");
+          }
+        }
+      );
+    });
+  };
+
+  if (savedData) {
+    // Return cached data immediately, fetch fresh in background
+    fetchFresh(); // Don't await
+    return savedData;
+  }
+
+  // No cached data, fetch and return fresh
+  try {
+    const freshData = await fetchFresh();
+    await currentStore.setValue(freshData);
+    return freshData;
+  } catch (err) {
+    console.error("Failed to fetch bookings:", err);
+    return null;
+  }
 };
 
 const fetchEventTypes = async () => {
