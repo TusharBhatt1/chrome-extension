@@ -16,25 +16,27 @@ export default function LoggedInView({ userData }: { userData: User }) {
 			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-4">
 					<img src={CalLogo} className="size-8" />
-					<span> Welcome, {userData.name || "User"} ! , let's make scheduling even more easier for you</span>
+					<span> Welcome, {userData.name || "User"} !</span>
 				</div>
+				<div className="flex gap-4">
 				<Tooltip>
 					<TooltipTrigger
 						onClick={() => handleCopy(`https://cal.com/${userData.username}`)}
 						className="border-border cursor-pointer border p-1 rounded-md"
 					>
-						<Link size={14} />
+						<Link size={15} />
 					</TooltipTrigger>
 					<TooltipContent>
 						<p>Copy link</p>
 					</TooltipContent>
 				</Tooltip>
+				<ThemeToggle/>
+				</div>
 			</div>
 			<Bookings />
 			<a href="https://app.cal.com" target="_blank">
 				<Button className="w-full rounded-full">Go to App</Button>
 			</a>
-			<ThemeToggle/>
 		</div>
 	);
 }
