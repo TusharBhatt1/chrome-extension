@@ -15,7 +15,7 @@ function App() {
 				<p className="text-sm text-muted-foreground">
 					Please log in to continue.
 				</p>
-				<a href="https://app.cal.com/auth/login" className="w-full" target="_blank"><Button className="w-full max-w-xs">Log in</Button></a>
+				<a href="https://app.cal.com/auth/login" className="w-full" target="_blank"><Button className="w-full max-w-xs">Log in to Cal</Button></a>
 			</div>
 		);
 		return <LoggedInView userData={userData} />;
