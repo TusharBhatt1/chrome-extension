@@ -9,6 +9,7 @@ import { User } from "@/lib/types";
 import Bookings from "./Bookings";
 import CalLogo from "@/assets/cal-logo.png";
 import { Button } from "./ui/button";
+import ThemeToggle from "./ThemeToggle";
 export default function LoggedInView({ userData }: { userData: User }) {
 	return (
 		<div className="space-y-4">
@@ -20,7 +21,7 @@ export default function LoggedInView({ userData }: { userData: User }) {
 				<Tooltip>
 					<TooltipTrigger
 						onClick={() => handleCopy(`https://cal.com/${userData.username}`)}
-						className="border-slate-400  cursor-pointer border p-1 rounded-md"
+						className="border-border cursor-pointer border p-1 rounded-md"
 					>
 						<Link size={14} />
 					</TooltipTrigger>
@@ -33,6 +34,7 @@ export default function LoggedInView({ userData }: { userData: User }) {
 			<a href="https://app.cal.com" target="_blank">
 				<Button className="w-full rounded-full">Go to App</Button>
 			</a>
+			<ThemeToggle/>
 		</div>
 	);
 }

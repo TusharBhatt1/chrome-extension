@@ -21,7 +21,6 @@ export default function useExtensionData() {
 			} catch (err) {
 				console.error("Failed to fetch user info:", err);
 			} finally {
-				// No change here
 			}
 		};
 		loadUserData();

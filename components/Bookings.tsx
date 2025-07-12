@@ -48,7 +48,7 @@ export default function Bookings() {
 						const formattedTime = `${format(start, "p")} - ${format(end, "p")}`;
 
 						return (
-							<div className="bg-neutral-100 p-2 rounded-md flex justify-between items-center">
+							<div className="bg-card p-2 rounded-md flex justify-between items-center">
 								<div>
 									<p key={i}>
 										{title}{" "}
@@ -57,7 +57,7 @@ export default function Bookings() {
 											{remaining > 0 && ` +${remaining} more`}
 										</>
 									</p>
-									<span className="text-neutral-700">{`${formattedDate} at ${formattedTime}`}</span>
+									<span className="text-muted-foreground">{`${formattedDate} at ${formattedTime}`}</span>
 								</div>
 								<div className="flex gap-4 items-center">
 									<Tooltip>
