@@ -198,7 +198,7 @@ export default function Bookings() {
 				</TabsContent>
 
 				<TabsContent value="past" className="text-sm">
-					{true ? (
+					{bookings ? (
 						renderBookings
 					) : (
 						<div className="flex items-center justify-center min-h-12">

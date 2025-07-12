@@ -15,7 +15,7 @@ export default function LoggedInView({ userData }: { userData: User }) {
 			<div className="flex justify-between items-center">
 				<div className="flex items-center gap-4">
 					<img src={CalLogo} className="size-8" />
-					<span> Welcome, {userData.name || "User"}!</span>
+					<span> Welcome, {userData.name || "User"} ! , let's make scheduling even more easier for you</span>
 				</div>
 				<Tooltip>
 					<TooltipTrigger
@@ -31,7 +31,7 @@ export default function LoggedInView({ userData }: { userData: User }) {
 			</div>
 			<Bookings />
 			<a href="https://app.cal.com" target="_blank">
-				<Button className="w-full">Go to the App</Button>
+				<Button className="w-full rounded-full">Go to App</Button>
 			</a>
 		</div>
 	);
